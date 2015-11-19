@@ -4,13 +4,13 @@ import os
 class LLCRegion:
     """A class the describes a region MITgcm Lat-Lon-Cube setup """
 
-    def __init_(self,
-                grid_dir = None,
-                data_dir = None,
-                Nlon = None,
-                Nlat = None,
-                Nz   = None,
-                dtype = np.dtype('>f4')
+    def __init__(self,
+                 grid_dir = None,
+                 data_dir = None,
+                 Nlon = None,
+                 Nlat = None,
+                 Nz   = None,
+                 dtype = np.dtype('>f4')
                 ):
 
         self.grid_dir = grid_dir    # Parent grid directory
