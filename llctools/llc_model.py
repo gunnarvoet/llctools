@@ -71,12 +71,11 @@ class LLCRegion:
 
     def init_time_series(self):
 
-       delta = tend-tini
-       delta_sec = delta.days * 24 * 60 * 60 
+        delta = tend-tini
+        delta_sec = delta.days * 24 * 60 * 60 
 
-       self.t = [tini + datetime.timedelta(seconds=ta) 
-                    for ta in range(0, delta_sec, dt.seconds)]
-
+        for sec in range(0,delta_sec, dt.seconds):
+            self.t = tini + datetime.timedelta(seconds=sec)
 
 # Below are some of Ryan's code... 
 class LLCModel:
