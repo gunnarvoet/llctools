@@ -1,8 +1,9 @@
-import numpy as np
 import os
+import datetime
+import numpy as np
 
 class LLCRegion:
-    """A class the describes a region MITgcm Lat-Lon-Cube setup """
+    """ A class the describes a region MITgcm Lat-Lon-Cube setup """
 
     def __init__(self,
                  grid_dir = None,
@@ -10,16 +11,23 @@ class LLCRegion:
                  Nlon = None,
                  Nlat = None,
                  Nz   = None,
+                 tini = '20110306T000000',
+                 tend = '20130422T060000',
+                 dt   = 1.,
                  dtype = np.dtype('>f4')
                 ):
 
-        self.grid_dir = grid_dir    # Parent grid directory
-        self.data_dir = data_dir    # Parent data directory
-        self.Nlon = Nlon            # Number of longitude points in the regional subset
-        self.Nlat = Nlat            # Number of latitude points in the regional subset
-        self.Nz = Nz                # Number of vertical levels in the regional subset
-        self.dtype = dtype          # Data type (default >f4, mean float single precision)
-        
+        self.grid_dir = grid_dir     # Grid directory
+        self.data_dir = data_dir     # Parent data directory
+        self.Nlon = Nlon             # Number of longitude points in the regional subset
+        self.Nlat = Nlat             # Number of latitude points in the regional subset
+        self.Nz = Nz                 # Number of vertical levels in the regional subset
+
+        self.tini = parse_time(tini) # Initial time
+        self.tend = parse_time(tend) # End time
+        self.dt   = dt               # Time interval at which outputs are saved [hours]
+        self.dtype = dtype           # Data type (default >f4, mean float single precision)
+
         self.grid_size = str(Nlon)+ 'x' + str(Nlat)  # grid size string
 
     def load_grid(self):
@@ -42,6 +50,33 @@ class LLCRegion:
     def load_3d_data(self, fni):
         return np.memmap(fni,dtype=self.dtype,
                          shape=(self.Nz, self.Nlat,self.Nlon), mode='r')
+
+    def parse_time(ts):
+        """ Converts MITgcm time in string format 
+            into datetime
+            
+            Parameters
+            ----------
+            ts: MITgcm time in string format (e.g., 
+                20121009T180000 corresponds to 
+                Oct. 9th 2012, 18 h 0 min 0 sec)
+                
+            Return
+            -------
+            The associated time date object """
+
+        return datetime.datetime(int(ts[:4]),int(ts[4:6]),
+                                 int(ts[6:8]),int(ts[9:11]),
+                                 int(ts[11:13]),int(ts[13:15]))
+
+    def init_time_series(self):
+
+       delta = tend-tini
+       delta_sec = delta.days * 24 * 60 * 60 
+
+       self.t = [tini + datetime.timedelta(seconds=ta) 
+                    for ta in range(0, delta_sec, dt.seconds)]
+
 
 # Below are some of Ryan's code... 
 class LLCModel:
