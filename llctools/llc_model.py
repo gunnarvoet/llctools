@@ -11,8 +11,8 @@ class LLCRegion:
                  Nlon = None,
                  Nlat = None,
                  Nz   = None,
-                 tini = '20110306T000000',
-                 tend = '20130422T060000',
+                 tini = '20110913T000000',
+                 tend = '20120128T120000',
                  dt   = 1.,
                  dtype = np.dtype('>f4')
                 ):
@@ -25,7 +25,7 @@ class LLCRegion:
 
         self.tini = parse_time(tini) # Initial time
         self.tend = parse_time(tend) # End time
-        self.dt   = dt               # Time interval at which outputs are saved [hours]
+        self.dt   = datetime.timedelta(hours=dt)  # Time interval at which outputs are saved [hours]
         self.dtype = dtype           # Data type (default >f4, mean float single precision)
 
         self.grid_size = str(Nlon)+ 'x' + str(Nlat)  # grid size string
@@ -51,31 +51,39 @@ class LLCRegion:
         return np.memmap(fni,dtype=self.dtype,
                          shape=(self.Nz, self.Nlat,self.Nlon), mode='r')
 
-    def parse_time(ts):
-        """ Converts MITgcm time in string format 
-            into datetime
-            
-            Parameters
-            ----------
-            ts: MITgcm time in string format (e.g., 
-                20121009T180000 corresponds to 
-                Oct. 9th 2012, 18 h 0 min 0 sec)
-                
-            Return
-            -------
-            The associated time date object """
-
-        return datetime.datetime(int(ts[:4]),int(ts[4:6]),
-                                 int(ts[6:8]),int(ts[9:11]),
-                                 int(ts[11:13]),int(ts[13:15]))
-
     def init_time_series(self):
 
-        delta = tend-tini
-        delta_sec = delta.days * 24 * 60 * 60 
+        delta = self.tend-self.tini
+        delta_sec = delta.days * 24 * 60 * 60 + delta.seconds
 
-        for sec in range(0,delta_sec, dt.seconds):
-            self.t = tini + datetime.timedelta(seconds=sec)
+        self.t = self.tini
+        for sec in range(self.dt.seconds,delta_sec+self.dt.seconds, 
+                        self.dt.seconds):
+
+            self.t = np.vstack([self.t, (self.tini + 
+                     datetime.timedelta(seconds=sec))])
+
+# utils
+def parse_time(ts):
+    """ Converts MITgcm time in string format 
+        into datetime
+        
+        Parameters
+        ----------
+        ts: MITgcm time in string format (e.g., 
+            20121009T180000 corresponds to 
+            Oct. 9th 2012, 18 h 0 min 0 sec)
+            
+        Return
+        -------
+        The associated time date object """
+
+    return datetime.datetime(int(ts[:4]),int(ts[4:6]),
+                             int(ts[6:8]),int(ts[9:11]),
+                             int(ts[11:13]),int(ts[13:15]))
+
+
+
 
 # Below are some of Ryan's code... 
 class LLCModel:
