@@ -20,7 +20,7 @@ class LLCRegion:
         self.Nz = Nz                # Number of vertical levels in the regional subset
         self.grid_size = str(Nlon)+ 'x' + str(Nlat)  # grid size string
 
-    def load_grid(grid_path):
+    def load_grid(self):
         
         self.xg = np.memmap(self.grid_path+'XG_'+self.grid_size,
                             dtype=self.dtype,shape=(self.Nlat,self.Nlon),
@@ -33,11 +33,11 @@ class LLCRegion:
         self.z = np.memmap(self.grid_path+'RF.data',dtype=self.dtype,
                            shape=(self.Nz), mode='r')
 
-    def load_2d_data(fni):
+    def load_2d_data(self, fni):
         return np.memmap(fni,dtype=self.dtype,
                          shape=(self.Nlat,self.Nlon), mode='r')
 
-    def load_3d_data(fni):
+    def load_3d_data(self, fni):
         return np.memmap(fni,dtype=self.dtype,
                          shape=(self.Nz, self.Nlat,self.Nlon), mode='r')
 
