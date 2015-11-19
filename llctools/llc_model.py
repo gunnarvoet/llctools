@@ -13,12 +13,12 @@ class LLCRegion:
                 dtype = np.dtype('>f4')
                 ):
 
-    self.grid_dir = grid_dir    # Parent grid directory
-    self.data_dir = data_dir    # Parent data directory
-    self.Nlon = Nlon            # Number of longitude points in the regional subset
-    self.Nlat = Nlat            # Number of latitude points in the regional subset
-    self.Nz = Nz                # Number of vertical levels in the regional subset
-    self.grid_size = str(Nlon)+ 'x' + str(Nlat)  # grid size string
+        self.grid_dir = grid_dir    # Parent grid directory
+        self.data_dir = data_dir    # Parent data directory
+        self.Nlon = Nlon            # Number of longitude points in the regional subset
+        self.Nlat = Nlat            # Number of latitude points in the regional subset
+        self.Nz = Nz                # Number of vertical levels in the regional subset
+        self.grid_size = str(Nlon)+ 'x' + str(Nlat)  # grid size string
 
     def load_grid(grid_path):
         
@@ -33,7 +33,7 @@ class LLCRegion:
         self.z = np.memmap(self.grid_path+'RF.data',dtype=self.dtype,
                            shape=(self.Nz), mode='r')
 
-   def load_2d_data(fni):
+    def load_2d_data(fni):
         return np.memmap(fni,dtype=self.dtype,
                          shape=(self.Nlat,self.Nlon), mode='r')
 
