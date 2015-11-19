@@ -18,6 +18,8 @@ class LLCRegion:
         self.Nlon = Nlon            # Number of longitude points in the regional subset
         self.Nlat = Nlat            # Number of latitude points in the regional subset
         self.Nz = Nz                # Number of vertical levels in the regional subset
+        self.dtype = dtype          # Data type (default >f4, mean float single precision)
+        
         self.grid_size = str(Nlon)+ 'x' + str(Nlat)  # grid size string
 
     def load_grid(self):
