@@ -24,13 +24,13 @@ class LLCRegion:
 
     def load_grid(self):
         
-        self.xg = np.memmap(self.grid_dir+'XG_'+self.grid_size,
-                            dtype=self.dtype,shape=(self.Nlat,self.Nlon),
-                            mode='r')
+        self.lon = np.memmap(self.grid_dir+'XG_'+self.grid_size,
+                             dtype=self.dtype,shape=(self.Nlat,self.Nlon),
+                             mode='r')
 
-        self.xg = np.memmap(self.grid_dir+'YG_'+self.grid_size,
-                            dtype=self.dtype,shape=(self.Nlat,self.Nlon),
-                            mode='r')
+        self.lat = np.memmap(self.grid_dir+'YG_'+self.grid_size,
+                             dtype=self.dtype,shape=(self.Nlat,self.Nlon),
+                             mode='r')
 
         self.z = np.memmap(self.grid_dir+'RF.data',dtype=self.dtype,
                            shape=(self.Nz), mode='r')
