@@ -40,8 +40,19 @@ class LLCRegion:
                              dtype=self.dtype,shape=(self.Nlat,self.Nlon),
                              mode='r')
 
-        self.z = np.memmap(self.grid_dir+'RF.data',dtype=self.dtype,
-                           shape=(self.Nz), mode='r')
+        try:
+            self.z = np.memmap(self.grid_dir+'RF.data',dtype=self.dtype,
+                               shape=(self.Nz), mode='r')
+        except:
+            #self.z = np.array([])
+            pass
+
+        try:
+            self.hb = np.memmap(self.grid_dir+'Depth_'+self.grid_size,
+                                dtype=self.dtype,shape=(self.Nlat,self.Nlon),
+                                mode='r')
+        except:
+            pass
 
     def load_2d_data(self, fni):
         return np.memmap(fni,dtype=self.dtype,
