@@ -32,21 +32,21 @@ class LLCRegion:
 
     def load_grid(self):
         
-        self.lon = np.memmap(self.grid_dir+'XG_'+self.grid_size,
+        self.lon = np.memmap(self.grid_dir+'old/'+'XG_'+self.grid_size,
                              dtype=self.dtype,shape=(self.Nlat,self.Nlon),
                              mode='r')
 
-        self.lat = np.memmap(self.grid_dir+'YG_'+self.grid_size,
+        self.lat = np.memmap(self.grid_dir+'old/'+'YG_'+self.grid_size,
                              dtype=self.dtype,shape=(self.Nlat,self.Nlon),
                              mode='r')
 
         try:
-            self.z = np.memmap(self.grid_dir+'RF.data',dtype=self.dtype,
+            self.z = np.memmap(self.grid_dir+'old/'+'RF.data',dtype=self.dtype,
                                shape=(self.Nz), mode='r')
         except:
-            #self.z = np.array([])
-            pass
-
+             # this is a temporary hack
+            self.z = np.memmap('/u/cbarbedo/llc/TropicalPacific/grid/RF.data',
+                               dtype=self.dtype,shape=(self.Nz), mode='r')[:self.Nz]
         try:
             self.hb = np.memmap(self.grid_dir+'Depth_'+self.grid_size,
                                 dtype=self.dtype,shape=(self.Nlat,self.Nlon),
@@ -92,7 +92,6 @@ def parse_time(ts):
     return datetime.datetime(int(ts[:4]),int(ts[4:6]),
                              int(ts[6:8]),int(ts[9:11]),
                              int(ts[11:13]),int(ts[13:15]))
-
 
 
 
