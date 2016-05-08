@@ -3,7 +3,7 @@ import datetime
 import numpy as np
 
 class LLCRegion:
-    """ A class the describes a region MITgcm Lat-Lon-Cube setup """
+    """ A class the describes a region MITgcm Lat-Lon-Cap setup """
 
     def __init__(self,
                  grid_dir = None,
