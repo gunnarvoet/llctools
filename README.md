@@ -1,5 +1,5 @@
 # llctools
-QTools for analyzing Lat-Lon-Cube simulation outputs
+QTools for analyzing Lat-Lon-Polar-Cap simulation outputs.
 
 # Goals
 The idea here is to put together codes for analyzing the LLC output.
