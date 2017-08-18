@@ -29,6 +29,7 @@ class LLCRegion:
         self.dtype = dtype           # Data type (default >f4, mean float single precision)
 
         self.grid_size = str(Nlon)+ 'x' + str(Nlat)  # grid size string
+        self.grid_size3d = str(Nlon)+ 'x' + str(Nlat)+ 'x' + str(Nz)  # grid size string
 
     def load_grid(self):
 
@@ -40,19 +41,24 @@ class LLCRegion:
                              dtype=self.dtype,shape=(self.Nlat,self.Nlon),
                              mode='r')
 
-        try:
-            self.z = np.memmap(self.grid_dir+'/RF.data',dtype=self.dtype,
-                               shape=(self.Nz), mode='r')
-        except:
+        # try:
+        self.z = np.memmap(self.grid_dir+'/thk90',dtype=self.dtype,
+                            shape=(self.Nz), mode='r')
+        # except:
+            # pass
              # this is a temporary hack
-            self.z = np.memmap('/u/cbarbedo/llc/TropicalPacific/grid/RF.data',
-                               dtype=self.dtype,shape=(self.Nz), mode='r')[:self.Nz]
-        try:
-            self.hb = np.memmap(self.grid_dir+'Depth_'+self.grid_size,
-                                dtype=self.dtype,shape=(self.Nlat,self.Nlon),
-                                mode='r')
-        except:
-            pass
+#            self.z = np.memmap('/u/cbarbedo/llc/TropicalPacific/grid/RF.data',
+#                               dtype=self.dtype,shape=(self.Nz), mode='r')[:self.Nz]
+        # try:
+        self.hb = np.memmap(self.grid_dir+'/Depth_'+self.grid_size,
+                            dtype=self.dtype,shape=(self.Nlat,self.Nlon),
+                            mode='r')
+        # except:
+            # pass
+
+        self.hfacc = np.memmap(self.grid_dir+'/hFacC_'+self.grid_size3d,
+                            dtype=self.dtype,shape=(self.Nz,self.Nlat,self.Nlon),
+                            mode='r')
 
     def load_2d_data(self, fni):
         return np.memmap(fni,dtype=self.dtype,
