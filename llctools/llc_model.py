@@ -3,7 +3,7 @@ import datetime
 import numpy as np
 
 class LLCRegion:
-    """ A class the describes a region MITgcm Lat-Lon-Cap setup """
+    """ A class that describes a region MITgcm Lat-Lon-Cap setup """
 
     def __init__(self,
                  grid_dir = None,
@@ -65,8 +65,10 @@ class LLCRegion:
                          shape=(self.Nlat,self.Nlon), mode='r')
 
     def load_3d_data(self, fni):
-        return np.memmap(fni,dtype=self.dtype,
+        with open(fni, 'rb') as f:
+            data = np.memmap(f, dtype=self.dtype,
                          shape=(self.Nz, self.Nlat,self.Nlon), mode='r')
+        return data
 
     def init_time_series(self):
 
