@@ -60,6 +60,22 @@ class LLCRegion:
                             dtype=self.dtype,shape=(self.Nz,self.Nlat,self.Nlon),
                             mode='r')
 
+        self.drf = np.memmap(self.grid_dir+'/drf',dtype=self.dtype,
+                            shape=(self.Nz), mode='r')
+
+        self.rac = np.memmap(self.grid_dir+'/RAC_'+self.grid_size,
+                             dtype=self.dtype,shape=(self.Nlat,self.Nlon),
+                             mode='r')
+
+        self.xg = np.memmap(self.grid_dir+'/YG_'+self.grid_size,
+                             dtype=self.dtype,shape=(self.Nlat,self.Nlon),
+                             mode='r')
+
+        self.yg = np.memmap(self.grid_dir+'/YG_'+self.grid_size,
+                             dtype=self.dtype,shape=(self.Nlat,self.Nlon),
+                             mode='r')
+ 
+
     def load_2d_data(self, fni):
         return np.memmap(fni,dtype=self.dtype,
                          shape=(self.Nlat,self.Nlon), mode='r')
